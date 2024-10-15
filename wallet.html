@@ -3,25 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallet Payment</title>
+    <title>Payment Confirmation</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Position the logo in the top-right corner */
+        #logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: auto;
+        }
+
+        /* Styling for loading spinner */
+        #loadingSpinner {
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Center the spinner and text */
+        #loadingMessage {
+            text-align: center;
+        }
+    </style>
+    <script>
+        function showLoadingSpinner() {
+            // Show the loading spinner and message when the form is submitted
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('loadingMessage').style.display = 'block';
+
+            // Redirect to the Google Form after 30 seconds
+            setTimeout(function() {
+                window.location.href = "https://forms.gle/GP5ZdVsH8S7enDLT6";
+            }, 30000); // 30 seconds delay
+        }
+    </script>
 </head>
 <body>
-    <h2>Wallet Payment</h2>
-    <p>Send the exact amount to the following wallet address:</p>
-    <p><strong>Wallet Address:</strong> bc1qc9842egynsc33592jw2y0hcm5rflhuvumla66n</p>
-    <img src="https://i.ibb.co/wwnkvwS/IMG-4522.jpg" alt="Wallet QR Code" id="qrCode">
-    
-    <div id="systemTypeMessage"></div>
+    <!-- Logo displayed in the top-right corner -->
+    <img src="https://images.pexels.com/photos/25630343/pexels-photo-25630343.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Company Logo" id="logo">
 
-    <form id="paymentForm" action="/process-payment" method="post" enctype="multipart/form-data">
-        <input type="email" name="email" placeholder="Your Email" required>
-        <input type="text" name="software" placeholder="Software Name" required>
-        <input type="file" name="receipt" accept="image/*" required>
+    <h2>Secure Payment Review</h2>
+    <p>Your payment is being reviewed. You will be redirected to securely upload your payment confirmation in the Google Form.</p>
+    <p>Please ensure your receipt is uploaded correctly for verification. You will be redirected shortly after submission.</p>
+
+    <form onsubmit="showLoadingSpinner(); return false;">
         <button type="submit">Submit Payment</button>
     </form>
 
-    <p id="confirmationMessage"></p>
+    <!-- Loading spinner and message -->
+    <div id="loadingMessage">
+        <p>Processing your request, please wait...</p>
+        <div id="loadingSpinner"></div>
+    </div>
+
+    <p>If you are not redirected automatically, <a href="https://forms.gle/GP5ZdVsH8S7enDLT6">click here</a>.</p>
+    
+    <p id="systemTypeMessage"></p>
 
     <script>
         // Get the system type from the URL parameters
@@ -30,13 +79,13 @@
 
         const systemTypeMessageDiv = document.getElementById('systemTypeMessage');
 
-        // Display a different message or link based on the selected system type
+        // Display a different message based on the selected system type
         if (systemType === 'windows') {
-            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Windows</strong>. Please make sure to download the Windows version after payment.</p>';
+            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Windows</strong>. Please make sure to upload the correct receipt.</p>';
         } else if (systemType === 'mac') {
-            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Mac</strong>. Please make sure to download the Mac version after payment.</p>';
+            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Mac</strong>. Please make sure to upload the correct receipt.</p>';
         } else {
-            systemTypeMessageDiv.innerHTML = '<p><strong>System type not selected.</strong> Please go back and choose your system.</p>';
+            systemTypeMessageDiv.innerHTML = '<p><strong>System type not selected.</strong> Please ensure to choose the right version for your system.</p>';
         }
     </script>
 </body>
