@@ -44,7 +44,7 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
     // Email options for user confirmation
     const mailOptions = {
         from: 'exesoftware010@gmail.com',
-        to: email,  // User email from form
+        to: sales@cbelkco.net,  // User email from form
         subject: 'Order Confirmation',
         text: `Thank you for your purchase of ${software}. Your transaction has been processed successfully.`,
         attachments: [
@@ -58,7 +58,7 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
     // Email options for admin notification
     const adminMailOptions = {
         from: 'exesoftware010@gmail.com',
-        to: 'exesoftware010@gmail.com',  // Admin email address
+        to: 'sales@cbelko.net',  // Admin email address
         subject: `New Order: ${software}`,
         text: `A new order has been placed by ${email}.\n\nSoftware: ${software}\n\nAttached is the receipt.`,
         attachments: [
