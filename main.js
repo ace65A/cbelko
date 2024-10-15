@@ -88,7 +88,7 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
                         <p>Order Number: ${Date.now()}</p>
                         <script>
                             setTimeout(function(){
-                                window.location.href = '/';
+                                window.location.href = 'index.html';
                             }, 30000);
                         </script>
                     `);
