@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Payment</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Wallet Payment</h2>
+    <p>Send the exact amount to the following wallet address:</p>
+    <p><strong>Wallet Address:</strong> bc1qc9842egynsc33592jw2y0hcm5rflhuvumla66n</p>
+    <img src="https://drive.google.com/file/d/1SStcL4Yx5qH2aDlzhzMAkoByezYnF58d/view?usp=drivesdk" alt="Wallet QR Code" id="qrCode">
+    
+    <div id="systemTypeMessage"></div>
+
+    <form id="paymentForm" action="/process-payment" method="post" enctype="multipart/form-data">
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="software" placeholder="Software Name" required>
+        <input type="file" name="receipt" accept="image/*" required>
+        <button type="submit">Submit Payment</button>
+    </form>
+
+    <p id="confirmationMessage"></p>
+
+    <script>
+        // Get the system type from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const systemType = urlParams.get('system');
+
+        const systemTypeMessageDiv = document.getElementById('systemTypeMessage');
+
+        // Display a different message or link based on the selected system type
+        if (systemType === 'windows') {
+            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Windows</strong>. Please make sure to download the Windows version after payment.</p>';
+        } else if (systemType === 'mac') {
+            systemTypeMessageDiv.innerHTML = '<p>You selected <strong>Mac</strong>. Please make sure to download the Mac version after payment.</p>';
+        } else {
+            systemTypeMessageDiv.innerHTML = '<p><strong>System type not selected.</strong> Please go back and choose your system.</p>';
+        }
+    </script>
+</body>
+</html>
