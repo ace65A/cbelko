@@ -1,117 +1,60 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-const multer = require('multer');
-const path = require('path');
-const dotenv = require('dotenv');
+document.addEventListener('DOMContentLoaded', function () {
+    // Automatically redirect to Google Form on page load after a delay
+    setTimeout(function() {
+        window.location.href = "https://forms.gle/B5n5JHsK4gBhB4mt5"; // Replace with your actual Google Form link
+    }, 3000); // Redirect after 3 seconds (you can change this delay)
 
-dotenv.config(); // Load environment variables from .env file if available
+    // Create and display a search bar on the page
+    const searchContainer = document.createElement('div');
+    searchContainer.style.margin = '20px';
+    
+    const searchLabel = document.createElement('label');
+    searchLabel.setAttribute('for', 'site-search');
+    searchLabel.innerText = 'Search our site: ';
+    
+    const searchInput = document.createElement('input');
+    searchInput.setAttribute('type', 'search');
+    searchInput.setAttribute('id', 'site-search');
+    searchInput.setAttribute('name', 'q');
+    searchInput.setAttribute('placeholder', 'Search...');
+    searchInput.style.padding = '10px';
+    searchInput.style.fontSize = '16px';
+    searchInput.style.width = '300px';
+    
+    const searchButton = document.createElement('button');
+    searchButton.innerText = 'Search';
+    searchButton.style.padding = '10px 20px';
+    searchButton.style.marginLeft = '10px';
+    searchButton.style.fontSize = '16px';
 
-const app = express();
-const port = 3000;
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public')); // Serve static files from the public directory
-
-// File upload settings for receipt
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Save files with current timestamp
-    }
-});
-
-const upload = multer({ storage: storage });
-
-// Route for serving the index HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'cbelko', 'index.html')); // Adjust path if needed
-});
-
-// Route for processing payment form
-app.post('/process-payment', upload.single('receipt'), (req, res) => {
-    const { email, software } = req.body;
-    const receipt = req.file;
-
-    // Validate input
-    if (!email || !software) {
-        return res.status(400).send('Email and software are required');
-    }
-
-    if (!receipt) {
-        return res.status(400).send('Receipt not uploaded');
-    }
-
-    // Email transport setup
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'exesoftware010@gmail.com', // Your Gmail address
-            pass: 'ummy craw feyq rgos',  // Your app password
+    // Append elements to the search container
+    searchContainer.appendChild(searchLabel);
+    searchContainer.appendChild(searchInput);
+    searchContainer.appendChild(searchButton);
+    
+    // Append the search container to the body (or to a specific element on the page)
+    document.body.appendChild(searchContainer);
+    
+    // Handle search functionality
+    searchButton.addEventListener('click', function () {
+        const query = searchInput.value;
+        if (query) {
+            // Redirect to search results page with the query as a parameter
+            window.location.href = /search-results?q=${encodeURIComponent(query)};
+        } else {
+            alert('Please enter a search term.');
         }
     });
 
-    // User confirmation email options
-    const mailOptions = {
-        from: 'sales@cbelko.net',
-        to: email,
-        subject: 'Order Confirmation',
-        text: Thank you for your purchase of ${software}. Your transaction has been processed successfully.,
-        attachments: [{
-            filename: receipt.originalname,
-            path: receipt.path,
-        }]
-    };
-
-    // Admin notification email options
-    const adminMailOptions = {
-        from: process.env.EMAIL_USER,
-        to: 'sales@cbelko.net',  // Admin email address
-        subject: New Order: ${software},
-        text: A new order has been placed by ${email}.\n\nSoftware: ${software}\n\nAttached is the receipt.,
-        attachments: [{
-            filename: receipt.originalname,
-            path: receipt.path,
-        }]
-    };
-
-    // Send user confirmation email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending user confirmation email:', error);
-            return res.status(500).send('Error sending email');
-        }
-
-        // Send admin notification email
-        transporter.sendMail(adminMailOptions, (adminError, adminInfo) => {
-            if (adminError) {
-                console.error('Error sending admin email:', adminError);
-                return res.status(500).send('Error sending admin email');
+    // Optionally: Allow search to work when pressing 'Enter'
+    searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const query = searchInput.value;
+            if (query) {
+                window.location.href = /search-results?q=${encodeURIComponent(query)};
+            } else {
+                alert('Please enter a search term.');
             }
-
-            // Redirect to confirmation page after successful email sends
-            res.redirect('/order-confirmation');
-        });
+        }
     });
-});
-
-// Route for order confirmation page
-app.get('/order-confirmation', (req, res) => {
-    res.send(`
-        <h2>Order Processed</h2>
-        <p>Your order has been processed. You will receive a confirmation email shortly.</p>
-        <p>Order Number: ${Date.now()}</p>
-        <script>
-            setTimeout(function(){
-                window.location.href = '/';
-            }, 30000);
-        </script>
-    `);
-});
-
-// Start server
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
 });
