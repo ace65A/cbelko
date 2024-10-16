@@ -48,8 +48,8 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: exesoftware010@gmail.com, // Your Gmail address
-            pass: ummy craw feyq rgos,  // Your app password
+            user: 'exesoftware010@gmail.com', // Your Gmail address
+            pass: 'ummy craw feyq rgos',  // Your app password
         }
     });
 
@@ -58,7 +58,7 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
         from: 'sales@cbelko.net',
         to: email,
         subject: 'Order Confirmation',
-        text: `Thank you for your purchase of ${software}. Your transaction has been processed successfully.`,
+        text: Thank you for your purchase of ${software}. Your transaction has been processed successfully.,
         attachments: [{
             filename: receipt.originalname,
             path: receipt.path,
@@ -69,8 +69,8 @@ app.post('/process-payment', upload.single('receipt'), (req, res) => {
     const adminMailOptions = {
         from: process.env.EMAIL_USER,
         to: 'sales@cbelko.net',  // Admin email address
-        subject: `New Order: ${software}`,
-        text: `A new order has been placed by ${email}.\n\nSoftware: ${software}\n\nAttached is the receipt.`,
+        subject: New Order: ${software},
+        text: A new order has been placed by ${email}.\n\nSoftware: ${software}\n\nAttached is the receipt.,
         attachments: [{
             filename: receipt.originalname,
             path: receipt.path,
