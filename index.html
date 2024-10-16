@@ -105,15 +105,6 @@
         </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form id="contactForm">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
-    </section>
 
     <!-- Product 15 -->
 <div class="product">
@@ -600,11 +591,20 @@
         <a href="https://www.youtube.com/@Exe_Software-b4k">Youtube</a>
     </section>
 
-    <!-- Add this button somewhere in your index.html -->
-<button onclick="redirectToGoogleForm()">Contact Us</button>
+    <section id="contact">
+    <h2>Contact Us</h2>
+    <form id="contactForm" onsubmit="handleSubmit(event)">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="Next">Next</button>
+    </form>
+</section>
 
 <script>
-    function redirectToGoogleForm() { // Redirect to the Google Form
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent the default form submission
+        // Redirect to the specified URL
         window.location.href = "https://forms.gle/B5n5JHsK4gBhB4mt5";
     }
 </script>
