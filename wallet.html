@@ -10,7 +10,7 @@
         #logo {
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px;
             width: 100px;
             height: auto;
         }
@@ -36,6 +36,14 @@
         #loadingMessage {
             text-align: center;
         }
+
+        /* Style for QR code */
+        #qrCode {
+            width: 200px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
     </style>
     <script>
         function showLoadingSpinner() {
@@ -58,6 +66,13 @@
     <p>Your payment is being reviewed. You will be redirected to securely upload your payment confirmation in the Google Form.</p>
     <p>Please ensure your receipt is uploaded correctly for verification. You will be redirected shortly after submission.</p>
 
+    <!-- Wallet Payment Details -->
+    <h3>Wallet Payment</h3>
+    <p>Send the exact amount to the following wallet address:</p>
+    <p><strong>Wallet Address:</strong> bc1qc9842egynsc33592jw2y0hcm5rflhuvumla66n</p>
+    <img src="https://i.ibb.co/wwnkvwS/IMG-4522.jpg" alt="Wallet QR Code" id="qrCode">
+
+    <!-- Form with submit button -->
     <form onsubmit="showLoadingSpinner(); return false;">
         <button type="submit">Submit Payment</button>
     </form>
