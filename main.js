@@ -1,104 +1,60 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-const multer = require('multer');
-const path = require('path');
-const app = express();
-const port = 3000;
+document.addEventListener('DOMContentLoaded', function () {
+    // Automatically redirect to Google Form on page load after a delay
+    setTimeout(function() {
+        window.location.href = "https://forms.gle/B5n5JHsK4gBhB4mt5"; // Replace with your actual Google Form link
+    }, 3000); // Redirect after 3 seconds (you can change this delay)
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+    // Create and display a search bar on the page
+    const searchContainer = document.createElement('div');
+    searchContainer.style.margin = '20px';
+    
+    const searchLabel = document.createElement('label');
+    searchLabel.setAttribute('for', 'site-search');
+    searchLabel.innerText = 'Search our site: ';
+    
+    const searchInput = document.createElement('input');
+    searchInput.setAttribute('type', 'search');
+    searchInput.setAttribute('id', 'site-search');
+    searchInput.setAttribute('name', 'q');
+    searchInput.setAttribute('placeholder', 'Search...');
+    searchInput.style.padding = '10px';
+    searchInput.style.fontSize = '16px';
+    searchInput.style.width = '300px';
+    
+    const searchButton = document.createElement('button');
+    searchButton.innerText = 'Search';
+    searchButton.style.padding = '10px 20px';
+    searchButton.style.marginLeft = '10px';
+    searchButton.style.fontSize = '16px';
 
-// File upload settings for receipt
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Save files with current timestamp
-    }
-});
-
-const upload = multer({ storage: storage });
-
-// Route for processing payment form
-app.post('/process-payment', upload.single('receipt'), (req, res) => {
-    const { email, software } = req.body;
-    const receipt = req.file;  // Uploaded file
-
-    if (!receipt) {
-        return res.status(400).send('Receipt not uploaded');
-    }
-
-    // Process the transaction (this is a placeholder, actual logic for validating the transaction should go here)
-
-    // Set up email transport to send confirmation
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'exesoftware010@gmail.com',
-            pass: 'ummy crqw fcyq rgos',
-        }
-    });
-
-    // Email options for user confirmation
-    const mailOptions = {
-        from: 'exesoftware010@gmail.com',
-        to: sales@cbelkco.net,  // User email from form
-        subject: 'Order Confirmation',
-        text: `Thank you for your purchase of ${software}. Your transaction has been processed successfully.`,
-        attachments: [
-            {
-                filename: receipt.originalname,
-                path: receipt.path,  // Attach uploaded receipt
-            }
-        ]
-    };
-
-    // Email options for admin notification
-    const adminMailOptions = {
-        from: 'exesoftware010@gmail.com',
-        to: 'sales@cbelko.net',  // Admin email address
-        subject: `New Order: ${software}`,
-        text: `A new order has been placed by ${email}.\n\nSoftware: ${software}\n\nAttached is the receipt.`,
-        attachments: [
-            {
-                filename: receipt.originalname,
-                path: receipt.path,  // Attach uploaded receipt
-            }
-        ]
-    };
-
-    // Send user confirmation email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.error('Error sending user confirmation email:', error);
+    // Append elements to the search container
+    searchContainer.appendChild(searchLabel);
+    searchContainer.appendChild(searchInput);
+    searchContainer.appendChild(searchButton);
+    
+    // Append the search container to the body (or to a specific element on the page)
+    document.body.appendChild(searchContainer);
+    
+    // Handle search functionality
+    searchButton.addEventListener('click', function () {
+        const query = searchInput.value;
+        if (query) {
+            // Redirect to search results page with the query as a parameter
+            window.location.href = /search-results?q=${encodeURIComponent(query)};
         } else {
-            console.log('User confirmation email sent: ' + info.response);
-
-            // Send admin notification email
-            transporter.sendMail(adminMailOptions, (adminError, adminInfo) => {
-                if (adminError) {
-                    return console.error('Error sending admin email:', adminError);
-                } else {
-                    console.log('Admin notification email sent: ' + adminInfo.response);
-                    res.send(`
-                        <h2>Order Processed</h2>
-                        <p>Your order has been processed. You will receive a confirmation email shortly.</p>
-                        <p>Order Number: ${Date.now()}</p>
-                        <script>
-                            setTimeout(function(){
-                                window.location.href = 'index.html';
-                            }, 30000);
-                        </script>
-                    `);
-                }
-            });
+            alert('Please enter a search term.');
         }
     });
-});
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    // Optionally: Allow search to work when pressing 'Enter'
+    searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const query = searchInput.value;
+            if (query) {
+                window.location.href = /search-results?q=${encodeURIComponent(query)};
+            } else {
+                alert('Please enter a search term.');
+            }
+        }
+    });
 });
